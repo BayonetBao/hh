@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gem.shop.dao.GoodsMapper">
+    <resultMap id="getGoodsMap" type="Goods">
+        <id column="id" property="id"/>
+        <result column="catory_id" property="catoryId"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="pic" property="pic"/>
+        <result column="createtime" property="createtime"/>
+        <result column="detail" property="detail"/>
+        <association property="catory" javaType="GoodsCatory">
+            <result column="cname" property="cname"/>
+        </association>
+    </resultMap>
+    <!--//查询所有的商品-->
+    <!--public List<Goods> getGoods();-->
+    <select id="getGoods" resultMap="getGoodsMap">
+       SELECT g.*,c.cname from goods g,catory c where catory_id=c.id
+    </select>
+    <!--//根据商品id查询商品-->
+    <!--public Goods selectGoodById(int id);-->
+    <select id="selectGoodById" resultType="Goods" parameterType="int">
+      SELECT * from goods where id=#{_parameter}
+    </select>
+    <!--//根据id删除商品-->
+    <!--public boolean deleteGood(int id);-->
+    <delete id="deleteGood" parameterType="int">
+      DELETE from goods where id=#{_parameter}
+    </delete>
+    <!--public boolean updateGood(Goods goods);-->
+    <update id="updateGood" parameterType="Goods">
+        UPDATE goods set price=#{price},createtime=#{createtime},pic=#{pic} where id=#{id}
+    </update>
+</mapper>
